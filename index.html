@@ -983,62 +983,118 @@
 
         <!-- Info Panel - Perkenalan Mode -->
         <div class="info-panel mode-content" data-mode="perkenalan">
-            <!-- User Input -->
-            <div class="panel-section">
-                <h3>📋 Data Perkenalan</h3>
-                <div class="input-group">
-                    <label for="nama-perkenalan">Nama:</label>
-                    <input type="text" id="nama-perkenalan" placeholder="Misal: Yossika" value="Yossika">
+            <!-- Tab Selector -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                <button id="tab-record-perkenalan" class="practice-btn active" style="flex: 1;">📝 Recording</button>
+                <button id="tab-playback-perkenalan" class="practice-btn" style="flex: 1;">▶️ Playback</button>
+            </div>
+
+            <!-- TAB 1: RECORDING -->
+            <div id="content-record-perkenalan" style="display: block;">
+                <!-- User Input -->
+                <div class="panel-section">
+                    <h3>📋 Data Perkenalan</h3>
+                    <div class="input-group">
+                        <label for="nama-perkenalan">Nama:</label>
+                        <input type="text" id="nama-perkenalan" placeholder="Misal: Yossika" value="Yossika">
+                    </div>
+                    <div class="input-group">
+                        <label for="status-perkenalan">Status/Jabatan:</label>
+                        <input type="text" id="status-perkenalan" placeholder="Misal: Mahasiswa" value="Mahasiswa">
+                    </div>
+                    <div class="input-group">
+                        <label for="institusi-perkenalan">Institusi:</label>
+                        <input type="text" id="institusi-perkenalan" placeholder="Misal: Telkom" value="Telkom">
+                    </div>
+                    <div class="input-group">
+                        <label for="salam-perkenalan">Salam Penutup:</label>
+                        <input type="text" id="salam-perkenalan" placeholder="Misal: Senang berkenalan" value="Senang berkenalan dengan Anda">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="status-perkenalan">Status/Jabatan:</label>
-                    <input type="text" id="status-perkenalan" placeholder="Misal: Mahasiswa" value="Mahasiswa">
+
+                <!-- Recording Progress -->
+                <div class="translation-box">
+                    <div class="label">📊 Progress Recording</div>
+                    <div id="progress-perkenalan" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <span class="gesture-item" style="background: #F3F4F6;">1️⃣ Hai...</span>
+                        <span class="gesture-item" style="background: #F3F4F6;">2️⃣ Nama</span>
+                        <span class="gesture-item" style="background: #F3F4F6;">3️⃣ Status</span>
+                        <span class="gesture-item" style="background: #F3F4F6;">4️⃣ Institusi</span>
+                        <span class="gesture-item" style="background: #F3F4F6;">5️⃣ Salam</span>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="institusi-perkenalan">Institusi:</label>
-                    <input type="text" id="institusi-perkenalan" placeholder="Misal: Telkom" value="Telkom">
+
+                <!-- Recording Controls -->
+                <div class="panel-section">
+                    <h3>🎬 Recording</h3>
+                    <button id="btn-start-record-perkenalan" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">▶️ Mulai Recording</button>
+                    <button id="btn-stop-record-perkenalan" class="btn btn-danger" style="width: 100%; display: none;">⏹️ Stop Recording</button>
+                    <button id="btn-reset-record-perkenalan" class="btn btn-warning" style="width: 100%;">🔄 Reset</button>
                 </div>
-                <div class="input-group">
-                    <label for="salam-perkenalan">Salam Penutup:</label>
-                    <input type="text" id="salam-perkenalan" placeholder="Misal: Senang berkenalan" value="Senang berkenalan dengan Anda">
+
+                <!-- Current Gesture Info -->
+                <div class="translation-box">
+                    <div class="label">🎯 Gesture Saat Ini</div>
+                    <div class="text" id="current-gesture-perkenalan" style="font-weight: bold; color: var(--primary-color);">-</div>
+                </div>
+
+                <!-- Gesture List -->
+                <div class="panel-section">
+                    <h3>📍 5 Gesture Perkenalan</h3>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 0.9rem;">
+                        <div class="gesture-item" style="background: #FFF3CD; border-left: 4px solid #FFC107;">1️⃣ <strong>Hai...</strong></div>
+                        <div class="gesture-item" style="background: #E7F3FF; border-left: 4px solid #2563EB;">2️⃣ <strong>Nama saya [Nama]</strong></div>
+                        <div class="gesture-item" style="background: #E8F5E9; border-left: 4px solid #4CAF50;">3️⃣ <strong>Saya adalah [Status]</strong></div>
+                        <div class="gesture-item" style="background: #FCE4EC; border-left: 4px solid #E91E63;">4️⃣ <strong>dari [Institusi]</strong></div>
+                        <div class="gesture-item" style="background: #F3E5F5; border-left: 4px solid #9C27B0;">5️⃣ <strong>[Salam Penutup]</strong></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Recording Progress -->
-            <div class="translation-box">
-                <div class="label">📊 Progress Recording</div>
-                <div id="progress-perkenalan" style="display: flex; gap: 5px; flex-wrap: wrap;">
-                    <span class="gesture-item" style="background: #F3F4F6;">1️⃣ Hai...</span>
-                    <span class="gesture-item" style="background: #F3F4F6;">2️⃣ Nama</span>
-                    <span class="gesture-item" style="background: #F3F4F6;">3️⃣ Status</span>
-                    <span class="gesture-item" style="background: #F3F4F6;">4️⃣ Institusi</span>
-                    <span class="gesture-item" style="background: #F3F4F6;">5️⃣ Salam</span>
+            <!-- TAB 2: PLAYBACK -->
+            <div id="content-playback-perkenalan" style="display: none;">
+                <!-- User Input untuk Playback -->
+                <div class="panel-section">
+                    <h3>📋 Edit Text</h3>
+                    <div class="input-group">
+                        <label for="nama-playback">Nama:</label>
+                        <input type="text" id="nama-playback" placeholder="Misal: Yossika" value="Yossika">
+                    </div>
+                    <div class="input-group">
+                        <label for="status-playback">Status/Jabatan:</label>
+                        <input type="text" id="status-playback" placeholder="Misal: Mahasiswa" value="Mahasiswa">
+                    </div>
+                    <div class="input-group">
+                        <label for="institusi-playback">Institusi:</label>
+                        <input type="text" id="institusi-playback" placeholder="Misal: Telkom" value="Telkom">
+                    </div>
+                    <div class="input-group">
+                        <label for="salam-playback">Salam Penutup:</label>
+                        <input type="text" id="salam-playback" placeholder="Misal: Senang berkenalan" value="Senang berkenalan dengan Anda">
+                    </div>
                 </div>
-            </div>
 
-            <!-- Recording Controls -->
-            <div class="panel-section">
-                <h3>🎬 Recording</h3>
-                <button id="btn-start-record-perkenalan" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">▶️ Mulai Recording</button>
-                <button id="btn-stop-record-perkenalan" class="btn btn-danger" style="width: 100%; display: none;">⏹️ Stop Recording</button>
-                <button id="btn-reset-record-perkenalan" class="btn btn-warning" style="width: 100%;">🔄 Reset</button>
-            </div>
+                <!-- Playback Controls -->
+                <div class="panel-section">
+                    <h3>▶️ Playback</h3>
+                    <button id="btn-play-perkenalan" class="btn btn-success" style="width: 100%; margin-bottom: 10px;">▶️ Play Semua</button>
+                    <button id="btn-next-gesture" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">⏭️ Gesture Berikutnya</button>
+                    <button id="btn-prev-gesture" class="btn btn-primary" style="width: 100%;">⏮️ Gesture Sebelumnya</button>
+                </div>
 
-            <!-- Current Gesture Info -->
-            <div class="translation-box">
-                <div class="label">🎯 Gesture Saat Ini</div>
-                <div class="text" id="current-gesture-perkenalan" style="font-weight: bold; color: var(--primary-color);">-</div>
-            </div>
+                <!-- Current Playback Info -->
+                <div class="translation-box">
+                    <div class="label">🎤 Text yang Diucapkan</div>
+                    <div class="text" id="playback-text" style="font-size: 0.95rem; line-height: 1.6; color: var(--primary-color);">-</div>
+                </div>
 
-            <!-- Gesture List -->
-            <div class="panel-section">
-                <h3>📍 5 Gesture Perkenalan</h3>
-                <div style="display: grid; grid-template-columns: 1fr; gap: 8px; font-size: 0.9rem;">
-                    <div class="gesture-item" style="background: #FFF3CD; border-left: 4px solid #FFC107;">1️⃣ <strong>Hai...</strong></div>
-                    <div class="gesture-item" style="background: #E7F3FF; border-left: 4px solid #2563EB;">2️⃣ <strong>Nama saya [Nama]</strong></div>
-                    <div class="gesture-item" style="background: #E8F5E9; border-left: 4px solid #4CAF50;">3️⃣ <strong>Saya adalah [Status]</strong></div>
-                    <div class="gesture-item" style="background: #FCE4EC; border-left: 4px solid #E91E63;">4️⃣ <strong>dari [Institusi]</strong></div>
-                    <div class="gesture-item" style="background: #F3E5F5; border-left: 4px solid #9C27B0;">5️⃣ <strong>[Salam Penutup]</strong></div>
+                <!-- Gesture Preview -->
+                <div class="translation-box">
+                    <div class="label">🖼️ Preview Gesture</div>
+                    <div id="gesture-preview-container" style="width: 100%; aspect-ratio: 4/3; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.9rem;">
+                        <img id="gesture-preview-img" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        <span id="gesture-preview-text">Belum ada gesture</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1832,6 +1888,28 @@
         }
 
         // ============================================
+        // TAB SWITCHING - PERKENALAN MODE
+        // ============================================
+        document.getElementById('tab-record-perkenalan')?.addEventListener('click', () => {
+            document.getElementById('content-record-perkenalan').style.display = 'block';
+            document.getElementById('content-playback-perkenalan').style.display = 'none';
+            document.getElementById('tab-record-perkenalan').classList.add('active');
+            document.getElementById('tab-playback-perkenalan').classList.remove('active');
+        });
+
+        document.getElementById('tab-playback-perkenalan')?.addEventListener('click', () => {
+            document.getElementById('content-record-perkenalan').style.display = 'none';
+            document.getElementById('content-playback-perkenalan').style.display = 'block';
+            document.getElementById('tab-record-perkenalan').classList.remove('active');
+            document.getElementById('tab-playback-perkenalan').classList.add('active');
+            
+            // Sync playback inputs dengan recording inputs
+            document.getElementById('nama-playback').value = document.getElementById('nama-perkenalan').value;
+            document.getElementById('status-playback').value = document.getElementById('status-perkenalan').value;
+            document.getElementById('institusi-playback').value = document.getElementById('institusi-perkenalan').value;
+            document.getElementById('salam-playback').value = document.getElementById('salam-perkenalan').value;
+        });
+
         // ============================================
         // PERKENALAN MODE - 5 GESTURE RECORDING
         // ============================================
@@ -2034,6 +2112,107 @@
             ];
             return fingertips.every(y => y < palmBottom - 0.1);
         }
+
+        // ============================================
+        // PLAYBACK MODE - TEXT-TO-SPEECH & DISPLAY
+        // ============================================
+        let currentPlaybackIndex = 0;
+        let playbackTexts = [];
+
+        function updatePlaybackContent(index) {
+            currentPlaybackIndex = index;
+            
+            // Update texts dari input
+            playbackTexts = [
+                'Hai',
+                `Nama saya ${document.getElementById('nama-playback').value}`,
+                `Saya adalah ${document.getElementById('status-playback').value}`,
+                `dari ${document.getElementById('institusi-playback').value}`,
+                document.getElementById('salam-playback').value
+            ];
+
+            // Display text
+            const textElem = document.getElementById('playback-text');
+            if (textElem) textElem.textContent = playbackTexts[index] || '-';
+
+            // Display gesture image
+            if (recordedGestures[index + 1]) {
+                const img = document.getElementById('gesture-preview-img');
+                const text = document.getElementById('gesture-preview-text');
+                if (img && text) {
+                    img.src = recordedGestures[index + 1];
+                    img.style.display = 'block';
+                    text.style.display = 'none';
+                }
+            } else {
+                const img = document.getElementById('gesture-preview-img');
+                const text = document.getElementById('gesture-preview-text');
+                if (img && text) {
+                    img.style.display = 'none';
+                    text.style.display = 'block';
+                    text.textContent = '❌ Gesture belum direcord';
+                }
+            }
+
+            // Speak text
+            speakText(playbackTexts[index]);
+        }
+
+        function speakText(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Playback button handlers
+        document.getElementById('btn-play-perkenalan')?.addEventListener('click', () => {
+            if (Object.keys(recordedGestures).length === 0) {
+                showToast('❌ Belum ada gesture yang direcord', 'error');
+                return;
+            }
+            currentPlaybackIndex = 0;
+            playAllGestures();
+        });
+
+        function playAllGestures() {
+            if (currentPlaybackIndex < 5) {
+                updatePlaybackContent(currentPlaybackIndex);
+                currentPlaybackIndex++;
+                // Play next after 3 seconds
+                setTimeout(playAllGestures, 3000);
+            } else {
+                showToast('🎉 Playback selesai!', 'success');
+            }
+        }
+
+        document.getElementById('btn-next-gesture')?.addEventListener('click', () => {
+            if (currentPlaybackIndex < 4) {
+                currentPlaybackIndex++;
+                updatePlaybackContent(currentPlaybackIndex);
+            } else {
+                showToast('⚠️ Sudah di gesture terakhir', 'warning');
+            }
+        });
+
+        document.getElementById('btn-prev-gesture')?.addEventListener('click', () => {
+            if (currentPlaybackIndex > 0) {
+                currentPlaybackIndex--;
+                updatePlaybackContent(currentPlaybackIndex);
+            } else {
+                showToast('⚠️ Sudah di gesture pertama', 'warning');
+            }
+        });
+
+        // Auto-sync playback saat input berubah
+        ['nama-playback', 'status-playback', 'institusi-playback', 'salam-playback'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', () => {
+                updatePlaybackContent(currentPlaybackIndex);
+            });
+        });
 
         // ============================================
         // INITIALIZATION
