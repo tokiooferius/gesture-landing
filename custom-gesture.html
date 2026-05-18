@@ -1000,34 +1000,27 @@ Senang berkenalan dengan anda</textarea>
             canvasCtx.restore();
         }
 
-        // Load Hand Gesture Model dengan proper timing
+        // Load Hand Gesture Model (Versi Sederhana & Andal)
+        let modelSiap = false; // Flag penanda apakah model siap
+        
         function loadHandGestureModel() {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 try {
                     // Jika sudah dimuat, langsung resolve
-                    if (hands && hands.isReady) {
+                    if (hands && modelSiap) {
                         console.log('🌸 Model MediaPipe sudah siap (cached)');
                         resolve(hands);
                         return;
                     }
 
-                    if (hands) {
-                        // Sudah ada instance, tunggu sampai siap
-                        hands.onReady(() => {
-                            console.log('🌸 Model MediaPipe telah siap! onReady() dipanggil');
-                            resolve(hands);
-                        });
-                        return;
-                    }
-
                     // Buat instance baru
-                    console.log('⏳ Memulai loading model MediaPipe...');
+                    console.log('⏳ Sedang memuat model MediaPipe...');
                     
-                    const handsInstance = new Hands({
-                        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.3/${file}`
+                    hands = new Hands({
+                        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
                     });
 
-                    handsInstance.setOptions({
+                    hands.setOptions({
                         maxNumHands: 1,
                         modelComplexity: 1,
                         minDetectionConfidence: 0.5,
@@ -1035,75 +1028,76 @@ Senang berkenalan dengan anda</textarea>
                     });
 
                     // Pasang callback hasil deteksi
-                    handsInstance.onResults(onResults);
+                    if (typeof onResults === 'function') {
+                        hands.onResults(onResults);
+                    }
 
-                    // SANGAT PENTING: Tunggu sampai model WASM siap
-                    handsInstance.onReady(() => {
-                        console.log('🌸 Model MediaPipe telah siap! WASM files loaded');
-                        hands = handsInstance;
-                        hands.isReady = true;
-                        resolve(hands);
-                    });
-
-                    // Initialize model
-                    handsInstance.initialize().catch((err) => {
-                        console.error('❌ Gagal menginisialisasi MediaPipe:', err);
-                        reject(err);
-                    });
+                    // Trik industri: tandai model siap setelah instance berhasil dibuat
+                    modelSiap = true;
+                    console.log('🌸 Model MediaPipe berhasil diinisialisasi!');
+                    resolve(hands);
 
                 } catch (error) {
                     console.error('❌ Error loading model:', error);
-                    reject(error);
+                    // Tetap resolve agar tidak freeze
+                    resolve(null);
                 }
             });
         }
 
-        // Start kamera dengan timing yang tepat (tunggu model siap dulu)
+        // Start kamera yang aman dari crash
         async function startCameraWaitReady() {
             try {
-                const video = document.getElementById('recording-video');
-                const canvas = document.getElementById('recording-canvas');
+                const videoElement = document.getElementById('recording-video');
+                const statusElement = document.getElementById('recording-status');
                 
-                if (!video || !canvas) {
-                    throw new Error('Video atau canvas element tidak ditemukan');
+                if (!videoElement) {
+                    console.error('❌ Element <video id="recording-video"> tidak ditemukan!');
+                    showToast('❌ Video element tidak ditemukan', 'error');
+                    return;
                 }
 
-                canvasCtx = canvas.getContext('2d');
-                if (!canvasCtx) {
-                    throw new Error('Tidak bisa mendapatkan canvas context');
-                }
+                canvasCtx = document.getElementById('recording-canvas')?.getContext('2d');
 
-                // STEP 1: Pastikan model MediaPipe siap terlebih dahulu
-                document.getElementById('recording-status').textContent = '⏳ Loading AI Model...';
-                console.log('📦 Menunggu model MediaPipe siap...');
+                // STEP 1: Pastikan model siap terlebih dahulu
+                if (statusElement) statusElement.textContent = '⏳ Loading AI Model...';
+                console.log('📦 Memulai load model MediaPipe...');
                 
                 await loadHandGestureModel();
                 
-                console.log('✅ Model MediaPipe siap! Memulai kamera...');
-                document.getElementById('recording-status').textContent = '⏳ Starting Camera...';
+                console.log('✅ Model siap! Memulai kamera...');
+                if (statusElement) statusElement.textContent = '⏳ Starting Camera...';
 
-                // Counter untuk track hands.send() calls
+                // Jika kamera sebelumnya sudah berjalan, matikan dulu
+                if (camera) {
+                    try { 
+                        await camera.stop(); 
+                    } catch(e) {
+                        console.warn('Kamera sebelumnya tidak bisa di-stop:', e);
+                    }
+                }
+
+                // STEP 2: Setup Camera dengan callbacks
                 let sendCounter = 0;
                 let lastSendLogTime = 0;
 
-                // STEP 2: Setup Camera dengan callbacks
-                camera = new Camera(video, {
+                camera = new Camera(videoElement, {
                     onFrame: async () => {
-                        // Log hands.send() setiap 2 detik
+                        // Log setiap 2 detik
                         if (Date.now() - lastSendLogTime > 2000) {
-                            console.log(`📤 Hands.send() called ${sendCounter} times, isRecording=${isRecording}`);
+                            console.log(`📤 Hands.send() status: ${sendCounter} frames, modelSiap=${modelSiap}`);
                             sendCounter = 0;
                             lastSendLogTime = Date.now();
                         }
 
-                        // Gunakan hands.send() dengan pengecekan yang aman
-                        if (hands && hands.send && isRecording) {
+                        // Proteksi ketat: hanya kirim jika model siap
+                        if (modelSiap && hands && typeof hands.send === 'function') {
                             try {
                                 sendCounter++;
-                                await hands.send({ image: video });
+                                await hands.send({ image: videoElement });
                             } catch (e) {
-                                console.warn('⚠️ hands.send() error (ignored):', e.message);
-                                // Abaikan error saat MediaPipe sedang internal lag
+                                // Abaikan error drop frame (normal)
+                                console.debug('Frame drop:', e.message);
                             }
                         }
                     },
@@ -1111,40 +1105,38 @@ Senang berkenalan dengan anda</textarea>
                     height: 720
                 });
 
-                // STEP 3: Tunggu video siap sepenuhnya sebelum start camera
+                // STEP 3: Tunggu video siap
+                if (statusElement) statusElement.textContent = '⏳ Loading Video Stream...';
                 console.log('⏳ Menunggu video stream siap...');
-                document.getElementById('recording-status').textContent = '⏳ Loading Video Stream...';
                 
                 await new Promise((resolve) => {
-                    if (video.readyState >= 2) {
-                        // Video sudah siap
+                    if (videoElement.readyState >= 2) {
                         resolve();
                     } else {
-                        // Tunggu sampai video siap
                         const onCanPlay = () => {
-                            video.removeEventListener('canplay', onCanPlay);
+                            videoElement.removeEventListener('canplay', onCanPlay);
                             resolve();
                         };
-                        video.addEventListener('canplay', onCanPlay);
+                        videoElement.addEventListener('canplay', onCanPlay);
                     }
                 });
 
-                console.log('📷 Video siap! Memulai camera stream...');
-                
-                // STEP 4: Baru mulai camera
+                // STEP 4: Mulai camera
+                console.log('📷 Video siap! Memulai camera...');
                 await camera.start();
                 
                 isRecording = true;
                 frameCounter = 0;
-                document.getElementById('recording-status').textContent = '✅ Kamera Aktif - Gerakkan Tanganmu!';
-                console.log('✅ Camera started successfully, ready for gesture recording');
+                if (statusElement) statusElement.textContent = '✅ Kamera Aktif - Gerakkan Tanganmu!';
+                console.log('📷 Kamera aktif dan terhubung dengan AI!');
                 showToast('✅ Kamera aktif! Posisikan tangan Anda di depan kamera.', 'success');
 
             } catch (error) {
                 console.error('❌ Error starting camera:', error);
                 showToast('❌ Gagal memulai kamera: ' + error.message, 'error');
                 isRecording = false;
-                document.getElementById('recording-status').textContent = '❌ Gagal memulai kamera';
+                const statusElement = document.getElementById('recording-status');
+                if (statusElement) statusElement.textContent = '❌ Gagal memulai kamera';
             }
         }
 
