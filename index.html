@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hand Gesture Recognition - Cute AI</title>
+    <title>Gestur Bahasa Isyarat Kelompok 2</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- MediaPipe CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -17,10 +17,16 @@
 
     <style>
         :root {
-            --bg-color: #FFF0F5; /* Lavender Blush / Pink Pastel Muda */
-            --main-pink: #FFB6C1; /* Light Pink */
-            --dark-pink: #FF69B4; /* Hot Pink */
-            --text-dark: #C71585; /* Medium Violet Red / Magenta Tua */
+            --primary-color: #2563EB;
+            --primary-dark: #1E40AF;
+            --secondary-color: #10B981;
+            --bg-light: #F8FAFC;
+            --bg-white: #FFFFFF;
+            --border-color: #E2E8F0;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --success-color: #059669;
+            --warning-color: #D97706;
         }
 
         * {
@@ -30,448 +36,699 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #E0E7FF 100%);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
             overflow-x: hidden;
         }
 
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Mode Selector Buttons */
+        .mode-selector {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            gap: 15px;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        #splash-screen h1 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 3rem;
-            color: var(--dark-pink);
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 0px #fff;
-        }
-
-        .btn-cute {
-            font-family: 'Fredoka One', cursive;
-            background-color: var(--dark-pink);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            border-radius: 50px;
+        .mode-btn {
+            padding: 12px 30px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-white);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 0px #C71585;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-cute:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0px #C71585;
+        .mode-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         /* Main Container */
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             width: 100%;
-            background: white;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.15);
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 30px;
+            padding: 30px;
+            animation: fadeIn 0.6s ease;
         }
 
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        h2 {
-            font-family: 'Fredoka One', cursive;
-            color: var(--dark-pink);
-            font-size: 2rem;
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-bottom: 10px;
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 25px;
+            }
         }
 
-        /* UI Elements */
-        .input-group {
+        /* Camera Section */
+        .camera-section {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            order: 2;
         }
 
-        label {
-            font-size: 1.1rem;
+        @media (max-width: 1024px) {
+            .camera-section {
+                order: 1;
+            }
         }
 
-        input[type="text"] {
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
-            padding: 12px 20px;
-            border: 3px solid var(--main-pink);
-            border-radius: 20px;
-            outline: none;
-            color: var(--text-dark);
-            font-size: 1rem;
-            transition: border-color 0.3s;
+        .camera-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        input[type="text"]:focus {
-            border-color: var(--dark-pink);
-        }
-
-        /* Badge Guide Panel */
-        .guide-panel {
-            background-color: var(--bg-color);
-            padding: 15px;
-            border-radius: 20px;
-            border: 2px dashed var(--main-pink);
-        }
-
-        .guide-panel h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .badge-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .badge {
-            background-color: white;
-            border: 2px solid var(--main-pink);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            display: inline-block;
-        }
-
-        /* Camera Viewport */
         .video-container {
             position: relative;
             width: 100%;
-            padding-top: 75%; /* 4:3 Aspect Ratio */
-            border-radius: 25px;
+            padding-top: 75%;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-            border: 4px solid var(--main-pink);
-            grid-column: 1 / -1;
+            border: 2px solid var(--border-color);
+            background: #000;
         }
 
-        #webcam {
+        video, canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            transform: scaleX(-1);
             object-fit: cover;
-            transform: scaleX(-1); /* Mirror effect */
         }
 
         #output_canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: scaleX(-1); /* Mirror effect to match video */
             z-index: 2;
         }
 
-        /* Status & Audio Bubble */
-        #status-text {
+        /* Status Display */
+        .status-display {
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: 10px;
             text-align: center;
-            grid-column: 1 / -1;
-            font-size: 1.2rem;
-            color: var(--dark-pink);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
         }
 
-        .audio-bubble {
+        #status-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            order: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .info-panel {
+                order: 2;
+            }
+        }
+
+        .panel-section {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .panel-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input Group */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        input[type="text"] {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Gesture List */
+        .gesture-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .gesture-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .gesture-item:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Hidden Sections */
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: contents;
+        }
+
+        /* Translation Display */
+        .translation-box {
+            background: linear-gradient(135deg, var(--success-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .translation-box .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .translation-box .text {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Alphabet Grid */
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
+            gap: 6px;
+        }
+
+        .alphabet-item {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: default;
+            transition: all 0.2s;
+        }
+
+        .alphabet-item.detected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Toast Notification */
+        .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: var(--dark-pink);
+            background: var(--primary-dark);
             color: white;
             padding: 15px 25px;
-            border-radius: 25px 25px 5px 25px;
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
-            font-family: 'Fredoka One', cursive;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
         }
 
-        .audio-bubble.active {
+        .toast.show {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .audio-bubble::after {
-            content: '🎵';
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 20px;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen -->
-    <div id="splash-screen">
-        <h1>Halo! ✨</h1>
-        <button class="btn-cute" id="btn-start">Mulai Aplikasi</button>
+    <!-- Header -->
+    <header>
+        <h1>Gestur Bahasa Isyarat</h1>
+        <p class="subtitle">Kelompok 2 - Deteksi Gestur Tangan Realtime</p>
+    </header>
+
+    <!-- Mode Selector -->
+    <div class="mode-selector">
+        <button class="mode-btn active" data-mode="gesture">Pengenalan Gestur</button>
+        <button class="mode-btn" data-mode="alphabet">Huruf & Angka</button>
     </div>
 
-    <!-- Main Application UI -->
+    <!-- Main Container -->
     <div class="container">
-        <h2>Gesture Recognition AI 🌸</h2>
-        
-        <div class="input-group">
-            <label for="username">Ketik Namamu di Sini:</label>
-            <input type="text" id="username" placeholder="Nama kamu..." value="Teman">
-        </div>
-
-        <div class="guide-panel">
-            <h3>Daftar Gestur Isyarat:</h3>
-            <div class="badge-list">
-                <span class="badge">🖐️ Semua Juka -> "Hai"</span>
-                <span class="badge">🤙 Kelingking -> "Perkenalkan"</span>
-                <span class="badge">☝️ Telunjuk -> "Nama saya"</span>
-                <span class="badge">👌 OK (Jempol+Telunjuk) -> "[Nama Kamu]"</span>
-                <span class="badge">🤟 Metal -> "Senang bertemu denganmu"</span>
-                <span class="badge">✌️ Peace -> "Terima kasih"</span>
+        <!-- Camera Section -->
+        <div class="camera-section mode-content active" data-mode="gesture">
+            <div class="camera-label">Kamera Input</div>
+            <div class="video-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="output_canvas"></canvas>
+            </div>
+            <div class="status-display">
+                <div id="status-text">Menunggu kamera aktif...</div>
             </div>
         </div>
 
-        <div class="video-container">
-            <video id="webcam" autoplay playsinline></video>
-            <canvas id="output_canvas"></canvas>
+        <!-- Camera Section Alphabet -->
+        <div class="camera-section mode-content" data-mode="alphabet">
+            <div class="camera-label">Kamera Input</div>
+            <div class="video-container">
+                <video id="webcam-alpha" autoplay playsinline></video>
+                <canvas id="output_canvas_alpha"></canvas>
+            </div>
+            <div class="status-display">
+                <div id="status-text-alpha">Menunggu kamera aktif...</div>
+            </div>
         </div>
 
-        <div id="status-text">Menunggu kamera aktif... 🎥</div>
+        <!-- Info Panel - Gesture Mode -->
+        <div class="info-panel mode-content active" data-mode="gesture">
+            <!-- User Input -->
+            <div class="panel-section">
+                <h3>Masukkan Nama Anda</h3>
+                <div class="input-group">
+                    <label for="username">Nama:</label>
+                    <input type="text" id="username" placeholder="Masukkan nama Anda..." value="Teman">
+                </div>
+            </div>
+
+            <!-- Translation Output -->
+            <div class="translation-box">
+                <div class="label">Hasil Deteksi</div>
+                <div class="text" id="translation-text">-</div>
+            </div>
+
+            <!-- Gesture Guide -->
+            <div class="panel-section">
+                <h3>Daftar Gestur</h3>
+                <div class="gesture-list">
+                    <div class="gesture-item">🖐️ Semua Jari Terbuka</div>
+                    <div class="gesture-item">👌 OK (Jempol + Telunjuk)</div>
+                    <div class="gesture-item">☝️ Hanya Telunjuk</div>
+                    <div class="gesture-item">🤙 Hanya Kelingking</div>
+                    <div class="gesture-item">✌️ Peace (V)</div>
+                    <div class="gesture-item">🤟 Metal (Spiderman)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Panel - Alphabet Mode -->
+        <div class="info-panel mode-content" data-mode="alphabet">
+            <!-- Translation Output -->
+            <div class="translation-box">
+                <div class="label">Huruf/Angka Terdeteksi</div>
+                <div class="text" id="translation-text-alpha">-</div>
+            </div>
+
+            <!-- Alphabet Status -->
+            <div class="panel-section">
+                <h3>Huruf A - Z</h3>
+                <div class="alphabet-grid" id="alphabet-grid"></div>
+            </div>
+
+            <!-- Numbers Status -->
+            <div class="panel-section">
+                <h3>Angka 0 - 9</h3>
+                <div class="alphabet-grid" id="number-grid"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Audio Bubble Notification -->
-    <div class="audio-bubble" id="audio-bubble">
-        Menyuarakan sesuatu...
-    </div>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
 
     <script>
-        const videoElement = document.getElementById('webcam');
-        const canvasElement = document.getElementById('output_canvas');
-        const canvasCtx = canvasElement.getContext('2d');
-        const statusText = document.getElementById('status-text');
-        const audioBubble = document.getElementById('audio-bubble');
-        const usernameInput = document.getElementById('username');
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let currentMode = 'gesture';
+        let gestureHands = null;
+        let alphabetHands = null;
+        let cameraGesture = null;
+        let cameraAlphabet = null;
 
-        let lastSpokenGesture = ""; 
-        let isSpeaking = false; 
-
-        // 1. Splash Screen Logic & Audio Context Trigger
-        document.getElementById('btn-start').addEventListener('click', () => {
-            const splash = document.getElementById('splash-screen');
-            splash.style.opacity = '0';
-            splash.style.transform = 'scale(0.9)';
-            
-            // Pancing Audio Context agar Web Speech API diizinkan browser
-            if (window.speechSynthesis) {
-                let u = new SpeechSynthesisUtterance('');
-                window.speechSynthesis.speak(u);
-            }
-
-            setTimeout(() => {
-                splash.style.display = 'none';
-                initMediaPipe();
-            }, 500);
+        // ============================================
+        // MODE SWITCHING
+        // ============================================
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const mode = this.dataset.mode;
+                switchMode(mode);
+            });
         });
 
-        // 2. Web Speech API (Text To Speech) Function
-        function speakindonesian(text) {
-            if (isSpeaking || text === lastSpokenGesture) return;
+        function switchMode(mode) {
+            currentMode = mode;
 
-            isSpeaking = true;
-            lastSpokenGesture = text;
+            // Update buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
 
-            // Memunculkan Audio Bubble
-            audioBubble.innerText = `"${text}"`;
-            audioBubble.classList.add('active');
+            // Update content visibility
+            document.querySelectorAll('.mode-content').forEach(el => {
+                el.classList.toggle('active', el.dataset.mode === mode);
+            });
 
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'id-ID';
-
-            utterance.onend = () => {
-                isSpeaking = false;
-                audioBubble.classList.remove('active');
-            };
-
-            utterance.onerror = () => {
-                isSpeaking = false;
-                audioBubble.classList.remove('active');
-            };
-
-            window.speechSynthesis.speak(utterance);
+            // Initialize appropriate camera
+            if (mode === 'gesture') {
+                if (!cameraGesture) initGestureMode();
+            } else if (mode === 'alphabet') {
+                if (!cameraAlphabet) initAlphabetMode();
+            }
         }
 
-        // Jaga-jaga jika tangan keluar frame, reset status penahan (debounce)
-        setInterval(() => {
-            if (!videoElement.srcObject) return;
-            // Jika dalam 2 detik tidak ada gestur konstan, reset penahan suara
-            if(window.speechSynthesis && !window.speechSynthesis.speaking) {
-                lastSpokenGesture = "";
-            }
-        }, 2000);
+        // ============================================
+        // GESTURE MODE
+        // ============================================
+        const gestureTranslations = {
+            'allOpen': 'Hai',
+            'ok': 'Nama saya',
+            'pointingIndex': 'Saya',
+            'pointingPinky': 'Halo',
+            'peace': 'Terima kasih',
+            'metal': 'Senang bertemu denganmu'
+        };
 
-        // 3. Logika Pendeteksi Gestur
-        function analyzeGestures(landmarks) {
-            // Mengambil koordinat Y untuk ujung jari (Tip) dan buku jari bawah (MCP)
-            const thumbTip = landmarks[4];
-            const thumbIp = landmarks[3];
-            const indexTip = landmarks[8];
-            const indexMcp = landmarks[5];
-            const middleTip = landmarks[12];
-            const middleMcp = landmarks[9];
-            const ringTip = landmarks[16];
-            const ringMcp = landmarks[13];
-            const pinkyTip = landmarks[20];
-            const pinkyMcp = landmarks[17];
+        function initGestureMode() {
+            const videoElement = document.getElementById('webcam');
+            const canvasElement = document.getElementById('output_canvas');
+            const canvasCtx = canvasElement.getContext('2d');
+            const statusText = document.getElementById('status-text');
+            const translationText = document.getElementById('translation-text');
+            const usernameInput = document.getElementById('username');
 
-            // Cek apakah jari tegak terbuka (Y ujung jari lebih kecil/tinggi daripada Y buku jarinya)
-            const isIndexOpen = indexTip.y < indexMcp.y;
-            const isMiddleOpen = middleTip.y < middleMcp.y;
-            const isRingOpen = ringTip.y < ringMcp.y;
-            const isPinkyOpen = pinkyTip.y < pinkyMcp.y;
-            
-            // Khusus jempol cek horizontal (X) atau jarak vertikal tipis karena anatomi berbeda
-            const isThumbOpen = Math.abs(thumbTip.x - thumbIp.x) > 0.03; 
+            let lastGesture = '';
+            let lastSpokenTime = 0;
 
-            // Hitung jarak Euclidean antara Ujung Jempol dan Ujung Telunjuk untuk Pose OK
-            const distanceThumbIndex = Math.sqrt(
-                Math.pow(thumbTip.x - indexTip.x, 2) + 
-                Math.pow(thumbTip.y - indexTip.y, 2)
-            );
-            const isOkPose = distanceThumbIndex < 0.05; // Jarak dekat berarti menyentuh
+            function onResults(results) {
+                canvasElement.width = videoElement.videoWidth;
+                canvasElement.height = videoElement.videoHeight;
 
-            // Klasifikasi Gestur:
-            
-            // 1. POSE OK: Jempol & Telunjuk nempel, 3 jari lain (Middle, Ring, Pinky) terbuka
-            if (isOkPose && isMiddleOpen && isRingOpen && isPinkyOpen) {
-                const nama = usernameInput.value.trim() || "Teman";
-                speakindonesian(nama);
-                return "Pose OK: " + nama;
-            }
+                canvasCtx.save();
+                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-            // 2. SEMUA JARI TERBUKA -> "Hai"
-            if (isThumbOpen && isIndexOpen && isMiddleOpen && isRingOpen && isPinkyOpen) {
-                speakindonesian("Hai");
-                return "Semua Jari Terbuka (Hai)";
-            }
+                if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                    statusText.innerText = '✓ Tangan Terdeteksi';
 
-            // 3. METAL / SPIDERMAN -> Jempol, Telunjuk, Kelingking Terbuka (Middle & Ring Tertutup)
-            if (isIndexOpen && isPinkyOpen && !isMiddleOpen && !isRingOpen) {
-                speakindonesian("Senang bertemu denganmu");
-                return "Pose Metal (Senang bertemu denganmu)";
-            }
+                    for (const landmarks of results.multiHandLandmarks) {
+                        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+                            color: '#2563EB',
+                            lineWidth: 3
+                        });
+                        drawLandmarks(canvasCtx, landmarks, {
+                            color: '#10B981',
+                            fillColor: '#2563EB',
+                            lineWidth: 2,
+                            radius: 4
+                        });
 
-            // 4. PEACE / V -> Telunjuk & Jari Tengah Terbuka (Lainnya tertutup)
-            if (isIndexOpen && isMiddleOpen && !isRingOpen && !isPinkyOpen) {
-                speakindonesian("Terima kasih");
-                return "Pose Peace (Terima kasih)";
-            }
-
-            // 5. HANYA TELUNJUK -> "Nama saya"
-            if (isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen) {
-                speakindonesian("Nama saya");
-                return "Hanya Telunjuk (Nama saya)";
-            }
-
-            // 6. HANYA KELINGKING -> "Perkenalkan"
-            if (isPinkyOpen && !isIndexOpen && !isMiddleOpen && !isRingOpen) {
-                speakindonesian("Perkenalkan");
-                return "Hanya Kelingking (Perkenalkan)";
-            }
-
-            return "Mendeteksi tangan... (Belum masuk kriteria gestur)";
-        }
-
-        // 4. MediaPipe Hands Core Setup
-        function onResults(results) {
-            // Menyesuaikan ukuran canvas dengan video active
-            canvasElement.width = videoElement.videoWidth;
-            canvasElement.height = videoElement.videoHeight;
-
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                statusText.innerText = "Tangan Terdeteksi! 🌟";
-                
-                for (const landmarks of results.multiHandLandmarks) {
-                    // Gambar Hubungan Tulang (Pink)
-                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#FF69B4', lineWidth: 4});
-                    // Gambar Titik Sendi (Putih)
-                    drawLandmarks(canvasCtx, landmarks, {color: '#FFFFFF', fillColor: '#FF69B4', lineWidth: 2, radius: 5});
-                    
-                    // Analisis Gestur dari tangan pertama yang terdeteksi
-                    const gestureStatus = analyzeGestures(landmarks);
-                    statusText.innerText = gestureStatus;
+                        const gesture = detectGesture(landmarks);
+                        if (gesture && gesture !== lastGesture) {
+                            lastGesture = gesture;
+                            const output = gestureTranslations[gesture] || gesture;
+                            translationText.innerText = gesture === 'ok' 
+                                ? (usernameInput.value.trim() || 'Teman')
+                                : output;
+                            
+                            speakText(output);
+                        }
+                    }
+                } else {
+                    statusText.innerText = '⚠ Posisikan tangan Anda di depan kamera';
+                    translationText.innerText = '-';
                 }
-            } else {
-                statusText.innerText = "Posisikan tanganmu di depan kamera 🖐️";
+                canvasCtx.restore();
             }
-            canvasCtx.restore();
-        }
 
-        function initMediaPipe() {
-            const hands = new Hands({
+            function detectGesture(landmarks) {
+                const thumbTip = landmarks[4];
+                const indexTip = landmarks[8];
+                const middleTip = landmarks[12];
+                const ringTip = landmarks[16];
+                const pinkyTip = landmarks[20];
+
+                const indexMcp = landmarks[5];
+                const middleMcp = landmarks[9];
+                const ringMcp = landmarks[13];
+                const pinkyMcp = landmarks[17];
+
+                const isIndexOpen = indexTip.y < indexMcp.y;
+                const isMiddleOpen = middleTip.y < middleMcp.y;
+                const isRingOpen = ringTip.y < ringMcp.y;
+                const isPinkyOpen = pinkyTip.y < pinkyMcp.y;
+
+                const distThumbIndex = Math.sqrt(
+                    Math.pow(thumbTip.x - indexTip.x, 2) + 
+                    Math.pow(thumbTip.y - indexTip.y, 2)
+                );
+                const isOkPose = distThumbIndex < 0.05;
+
+                // Gesture Detection
+                if (isOkPose && isMiddleOpen && isRingOpen && isPinkyOpen) {
+                    return 'ok';
+                } else if (isIndexOpen && isMiddleOpen && !isRingOpen && !isPinkyOpen) {
+                    return 'peace';
+                } else if (isIndexOpen && isPinkyOpen && !isMiddleOpen && !isRingOpen) {
+                    return 'metal';
+                } else if (isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen) {
+                    return 'pointingIndex';
+                } else if (isPinkyOpen && !isIndexOpen && !isMiddleOpen && !isRingOpen) {
+                    return 'pointingPinky';
+                } else if (isIndexOpen && isMiddleOpen && isRingOpen && isPinkyOpen) {
+                    return 'allOpen';
+                }
+                return null;
+            }
+
+            // Initialize MediaPipe Hands
+            gestureHands = new Hands({
                 locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
             });
 
-            hands.setOptions({
+            gestureHands.setOptions({
                 maxNumHands: 1,
-                modelComplexity: 0, // Cepat dan ringan untuk real-time browser
+                modelComplexity: 0,
                 minDetectionConfidence: 0.5,
                 minTrackingConfidence: 0.5
             });
 
-            hands.onResults(onResults);
+            gestureHands.onResults(onResults);
 
-            const camera = new Camera(videoElement, {
+            cameraGesture = new Camera(videoElement, {
                 onFrame: async () => {
-                    await hands.send({image: videoElement});
+                    await gestureHands.send({image: videoElement});
                 },
                 width: 640,
                 height: 480
             });
-            
-            camera.start().then(() => {
-                statusText.innerText = "Kamera Siap! Posisikan tanganmu 🖐️";
-            }).catch(err => {
-                statusText.innerText = "Gagal mengakses kamera 😢. Pastikan izin diberikan.";
+
+            cameraGesture.start().catch(err => {
+                statusText.innerText = 'Gagal mengakses kamera. Periksa izin akses.';
                 console.error(err);
             });
         }
+
+        // ============================================
+        // ALPHABET MODE
+        // ============================================
+        const alphabetList = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const numberList = '0123456789'.split('');
+
+        function initAlphabetMode() {
+            // Create grids
+            const alphabetGrid = document.getElementById('alphabet-grid');
+            const numberGrid = document.getElementById('number-grid');
+
+            alphabetGrid.innerHTML = alphabetList.map(letter => 
+                `<div class="alphabet-item" data-letter="${letter}">${letter}</div>`
+            ).join('');
+
+            numberGrid.innerHTML = numberList.map(num => 
+                `<div class="alphabet-item" data-number="${num}">${num}</div>`
+            ).join('');
+
+            // Note: Full ASL/alphabet detection would require a separate trained model
+            // For now, we'll show a placeholder
+            document.getElementById('status-text-alpha').innerText = '💡 Mode Huruf & Angka - Fitur Deteksi Sedang Dikembangkan';
+            document.getElementById('translation-text-alpha').innerText = 'Menunggu Model...';
+        }
+
+        // ============================================
+        // TEXT-TO-SPEECH (Bahasa Indonesia)
+        // ============================================
+        function speakText(text) {
+            if (!text || !window.speechSynthesis) return;
+
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            window.speechSynthesis.speak(utterance);
+
+            showToast(`Berbicara: "${text}"`);
+        }
+
+        // ============================================
+        // TOAST NOTIFICATION
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initGestureMode();
+        });
     </script>
 </body>
 </html>
