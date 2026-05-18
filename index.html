@@ -298,6 +298,225 @@
             border-color: var(--primary-color);
         }
 
+        /* Gesture Guide Cards */
+        .gesture-guide-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .gesture-guide-card {
+            background: linear-gradient(135deg, #F0F9FF, #E0F2FE);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gesture-guide-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .gesture-guide-card.active {
+            background: linear-gradient(135deg, var(--primary-color), #0369A1);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .gesture-guide-card .emoji {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .gesture-guide-card .letter {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .gesture-guide-card.active .letter {
+            color: white;
+        }
+
+        .gesture-guide-card .instruction {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        .gesture-guide-card.active .instruction {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Gesture Instruction Panel */
+        .instruction-panel {
+            background: linear-gradient(135deg, #F8FAFC, #E8F5FF);
+            border: 2px solid var(--primary-color);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .instruction-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .instruction-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .emoji-large {
+            font-size: 3rem;
+            margin: 10px 0;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            animation: successPop 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Detection Feedback */
+        .detection-feedback {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .feedback-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feedback-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .feedback-accuracy {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .accuracy-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Stats Box */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            background: var(--bg-light);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Practice Mode Toggle */
+        .practice-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .practice-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .practice-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .practice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
         /* Hidden Sections */
         .mode-content {
             display: none;
@@ -659,10 +878,57 @@
 
         <!-- Info Panel - Alphabet Mode -->
         <div class="info-panel mode-content" data-mode="alphabet">
+            <!-- Practice Mode Toggle -->
+            <div class="practice-toggle">
+                <button class="practice-btn active" id="mode-learn">📚 Mode Belajar</button>
+                <button class="practice-btn" id="mode-practice">🎯 Mode Latihan</button>
+            </div>
+
             <!-- Translation Output -->
             <div class="translation-box">
                 <div class="label">Huruf/Angka Terdeteksi</div>
                 <div class="text" id="translation-text-alpha">-</div>
+            </div>
+
+            <!-- Instruction Panel -->
+            <div class="instruction-panel" id="instruction-panel">
+                <div class="instruction-title">🖐️ Pilih Huruf/Angka untuk Melihat Contoh</div>
+                <div class="instruction-text">Tekan salah satu kartu di bawah untuk melihat cara membuat gestur tersebut</div>
+            </div>
+
+            <!-- Gesture Guide Cards - Alphabet -->
+            <div class="panel-section">
+                <h3>Contoh Gestur A - Z</h3>
+                <div class="gesture-guide-container" id="alphabet-guide"></div>
+            </div>
+
+            <!-- Gesture Guide Cards - Numbers -->
+            <div class="panel-section">
+                <h3>Contoh Gestur 0 - 9</h3>
+                <div class="gesture-guide-container" id="number-guide"></div>
+            </div>
+
+            <!-- Detection Feedback (Tampil saat practice mode) -->
+            <div class="detection-feedback" id="detection-feedback" style="display: none;">
+                <div class="feedback-label">Akurasi Deteksi</div>
+                <div class="feedback-value" id="feedback-value">-</div>
+                <div class="accuracy-bar">
+                    <div class="accuracy-fill" id="accuracy-fill"></div>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-detected">0</div>
+                        <div class="stat-label">Terdeteksi</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-success">0</div>
+                        <div class="stat-label">Sukses</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-accuracy">0%</div>
+                        <div class="stat-label">Akurasi</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Detection History -->
@@ -675,18 +941,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Alphabet Status -->
-            <div class="panel-section">
-                <h3>Huruf A - Z</h3>
-                <div class="alphabet-grid" id="alphabet-grid"></div>
-            </div>
-
-            <!-- Numbers Status -->
-            <div class="panel-section">
-                <h3>Angka 0 - 9</h3>
-                <div class="alphabet-grid" id="number-grid"></div>
             </div>
         </div>
     </div>
@@ -861,9 +1115,10 @@
                 btnStart.disabled = true;
                 btnStop.disabled = false;
                 
-                if (!alphabetHands) initAlphabetMode();
+                // Initialize alphabet detection with MediaPipe
+                initAlphabetMode();
                 
-                showToast('✓ Kamera Alphabet Mode aktif');
+                showToast('✓ Kamera Alphabet Mode aktif - Mulai tunjukkan gestur tangan!');
             } catch (err) {
                 console.error('Gagal membuka kamera:', err);
                 showToast('✗ Gagal membuka kamera. Pastikan tidak sedang digunakan di tab lain!');
@@ -1035,59 +1290,347 @@
         }
 
         // ============================================
-        // ALPHABET MODE
+        // ALPHABET MODE WITH REAL-TIME DETECTION
         // ============================================
         const alphabetList = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const numberList = '0123456789'.split('');
 
+        const gestureInstructions = {
+            'A': { emoji: '✊', desc: 'Tangan tertutup, jempol terbuka' },
+            'B': { emoji: '✋', desc: 'Semua jari terbuka, telapak depan' },
+            'C': { emoji: '👌', desc: 'Jari membentuk C terbuka' },
+            'D': { emoji: '☝️', desc: 'Hanya telunjuk terbuka' },
+            'E': { emoji: '🖐️', desc: 'Semua jari terbuka' },
+            'F': { emoji: '🤌', desc: 'Jempol + Telunjuk terbuka' },
+            'G': { emoji: '🤙', desc: 'Telunjuk + Kelingking terbuka' },
+            'I': { emoji: '🖌️', desc: 'Hanya kelingking terbuka' },
+            'L': { emoji: '👉', desc: 'Telunjuk + Jempol tegak lurus' },
+            'O': { emoji: '⭕', desc: 'Semua jari tertutup (lingkaran)' },
+            'P': { emoji: '✌️', desc: 'Telunjuk + Jari tengah terbuka' },
+            'V': { emoji: '✌️', desc: 'Telunjuk + Jari tengah terbuka (Peace)' },
+            'W': { emoji: '👐', desc: '3 jari terbuka' },
+            'Y': { emoji: '🤘', desc: 'Jempol + Kelingking terbuka' }
+        };
+
+        let practiceMode = false;
+        let practiceStats = { detected: 0, success: 0, total: 0 };
+        let selectedGesture = null;
+
         function initAlphabetMode() {
-            const alphabetGrid = document.getElementById('alphabet-grid');
-            const numberGrid = document.getElementById('number-grid');
+            const videoElement = document.getElementById('webcam-alpha');
+            const canvasElement = document.getElementById('output_canvas_alpha');
+            const canvasCtx = canvasElement.getContext('2d');
             const translationTextAlpha = document.getElementById('translation-text-alpha');
+            const alphabetGuide = document.getElementById('alphabet-guide');
+            const numberGuide = document.getElementById('number-guide');
+            const instructionPanel = document.getElementById('instruction-panel');
 
-            alphabetGrid.innerHTML = alphabetList.map(letter => 
-                `<div class="alphabet-item btn-abjad" data-letter="${letter}">${letter}</div>`
-            ).join('');
+            // Create gesture guide cards
+            alphabetGuide.innerHTML = alphabetList.map(letter => {
+                const inst = gestureInstructions[letter];
+                const emoji = inst ? inst.emoji : '❓';
+                const desc = inst ? inst.desc : 'Gesture belum tersedia';
+                return `
+                    <div class="gesture-guide-card" data-gesture="${letter}" data-type="letter">
+                        <span class="emoji">${emoji}</span>
+                        <div class="letter">${letter}</div>
+                        <div class="instruction">${desc}</div>
+                    </div>
+                `;
+            }).join('');
 
-            numberGrid.innerHTML = numberList.map(num => 
-                `<div class="alphabet-item btn-abjad" data-number="${num}">${num}</div>`
-            ).join('');
+            numberGuide.innerHTML = numberList.map(num => `
+                <div class="gesture-guide-card" data-gesture="${num}" data-type="number">
+                    <span class="emoji">🔢</span>
+                    <div class="letter">${num}</div>
+                    <div class="instruction">Angka ${num}</div>
+                </div>
+            `).join('');
 
-            const tombolAbjad = document.querySelectorAll('.btn-abjad');
+            // Add card click listeners
+            document.querySelectorAll('.gesture-guide-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const gesture = this.dataset.gesture;
+                    showGestureInstruction(gesture);
+                    selectedGesture = gesture;
 
-            function ucapkanTeks(teks) {
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel();
-                    
-                    const utterance = new SpeechSynthesisUtterance(teks);
-                    utterance.lang = 'id-ID';
-                    utterance.rate = 1;
-                    utterance.pitch = 1;
-                    utterance.volume = 1;
-                    
-                    window.speechSynthesis.speak(utterance);
+                    // Update active state
+                    document.querySelectorAll('.gesture-guide-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+
+                    if (practiceMode) {
+                        startPractice(gesture);
+                    }
+                });
+            });
+
+            // Mode toggle
+            document.getElementById('mode-learn').addEventListener('click', function() {
+                practiceMode = false;
+                this.classList.add('active');
+                document.getElementById('mode-practice').classList.remove('active');
+                document.getElementById('detection-feedback').style.display = 'none';
+            });
+
+            document.getElementById('mode-practice').addEventListener('click', function() {
+                practiceMode = true;
+                this.classList.add('active');
+                document.getElementById('mode-learn').classList.remove('active');
+                document.getElementById('detection-feedback').style.display = 'block';
+            });
+
+            function showGestureInstruction(gesture) {
+                const inst = gestureInstructions[gesture];
+                if (inst) {
+                    instructionPanel.innerHTML = `
+                        <div class="instruction-title">${gesture}</div>
+                        <div class="emoji-large">${inst.emoji}</div>
+                        <div class="instruction-text"><strong>${inst.desc}</strong></div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 10px;">
+                            💡 Posisikan tangan Anda sesuai dengan instruksi di atas dan lihat deteksi real-time!
+                        </div>
+                    `;
+                } else {
+                    instructionPanel.innerHTML = `
+                        <div class="instruction-title">${gesture}</div>
+                        <div class="emoji-large">🤷</div>
+                        <div class="instruction-text">Gesture ini sedang dikembangkan</div>
+                    `;
                 }
             }
 
-            tombolAbjad.forEach(tombol => {
-                tombol.addEventListener('click', () => {
-                    const nilai = tombol.dataset.letter || tombol.dataset.number;
-                    
-                    translationTextAlpha.innerText = nilai;
-                    addToHistory('alphabet', nilai);
+            function startPractice(targetGesture) {
+                practiceStats.total++;
+                translationTextAlpha.innerText = `🎯 Tunjukkan: ${targetGesture}`;
+                document.getElementById('feedback-value').innerText = `Menunggu ${targetGesture}...`;
+            }
 
-                    tombolAbjad.forEach(btn => btn.classList.remove('detected'));
-                    tombol.classList.add('detected');
-                    updateConfidenceBar('alphabet', 95);
+            let lastDetectionTime = 0;
 
-                    ucapkanTeks(nilai);
+            function onResults(results) {
+                canvasElement.width = videoElement.videoWidth;
+                canvasElement.height = videoElement.videoHeight;
 
-                    setTimeout(() => {
-                        tombol.classList.remove('detected');
-                        updateConfidenceBar('alphabet', 0);
-                    }, 800);
-                });
+                canvasCtx.save();
+                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+                let confidence = 0;
+                let detectedChar = null;
+
+                if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                    for (let handIdx = 0; handIdx < Math.min(results.multiHandLandmarks.length, 2); handIdx++) {
+                        const landmarks = results.multiHandLandmarks[handIdx];
+
+                        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+                            color: handIdx === 0 ? '#2563EB' : '#10B981',
+                            lineWidth: 3
+                        });
+                        drawLandmarks(canvasCtx, landmarks, {
+                            color: '#FFFFFF',
+                            fillColor: handIdx === 0 ? '#2563EB' : '#10B981',
+                            lineWidth: 2,
+                            radius: 4
+                        });
+
+                        const { char, conf } = detectAlphabetGesture(landmarks);
+                        
+                        if (conf > confidence) {
+                            confidence = conf;
+                            detectedChar = char;
+                        }
+
+                        // Hand label
+                        const handLabel = handIdx === 0 ? 'Tangan 1' : 'Tangan 2';
+                        canvasCtx.fillStyle = handIdx === 0 ? '#2563EB' : '#10B981';
+                        canvasCtx.font = 'bold 14px Arial';
+                        canvasCtx.fillText(handLabel, 10, 30 + (handIdx * 25));
+                    }
+
+                    // Update detection
+                    if (detectedChar && Date.now() - lastDetectionTime > 800) {
+                        lastDetectionTime = Date.now();
+                        translationTextAlpha.innerText = detectedChar;
+                        addToHistory('alphabet', detectedChar);
+                        speakText(detectedChar);
+
+                        // Highlight
+                        const detectedItem = document.querySelector(`[data-gesture="${detectedChar}"]`);
+                        if (detectedItem) highlightGestureCard(detectedItem);
+
+                        // Practice feedback
+                        if (practiceMode) {
+                            practiceStats.detected++;
+                            if (detectedChar === selectedGesture) {
+                                practiceStats.success++;
+                                showSuccessAnimation(detectedChar);
+                                document.getElementById('feedback-value').innerText = `✓ Benar! ${detectedChar}`;
+                            } else {
+                                document.getElementById('feedback-value').innerText = `${detectedChar} (tapi target: ${selectedGesture})`;
+                            }
+                            updatePracticeStats();
+                        }
+                    }
+                } else {
+                    translationTextAlpha.innerText = '-';
+                }
+
+                updateConfidenceBar('alphabet', confidence);
+                canvasCtx.restore();
+            }
+
+            function highlightGestureCard(card) {
+                document.querySelectorAll('.gesture-guide-card').forEach(c => c.classList.remove('detected'));
+                card.classList.add('detected');
+                setTimeout(() => card.classList.remove('detected'), 600);
+            }
+
+            function updatePracticeStats() {
+                document.getElementById('stat-detected').innerText = practiceStats.detected;
+                document.getElementById('stat-success').innerText = practiceStats.success;
+                const accuracy = practiceStats.detected > 0 
+                    ? Math.round((practiceStats.success / practiceStats.detected) * 100)
+                    : 0;
+                document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+                document.getElementById('accuracy-fill').style.width = `${accuracy}%`;
+            }
+
+            function detectAlphabetGesture(landmarks) {
+                const thumbTip = landmarks[4];
+                const thumbIp = landmarks[3];
+                const indexTip = landmarks[8];
+                const indexPip = landmarks[6];
+                const indexMcp = landmarks[5];
+                const middleTip = landmarks[12];
+                const middleMcp = landmarks[9];
+                const ringTip = landmarks[16];
+                const ringMcp = landmarks[13];
+                const pinkyTip = landmarks[20];
+                const pinkyMcp = landmarks[17];
+
+                const isThumbOpen = Math.abs(thumbTip.x - thumbIp.x) > 0.04;
+                const isIndexOpen = indexTip.y < indexMcp.y - 0.05;
+                const isMiddleOpen = middleTip.y < middleMcp.y - 0.05;
+                const isRingOpen = ringTip.y < ringMcp.y - 0.05;
+                const isPinkyOpen = pinkyTip.y < pinkyMcp.y - 0.05;
+
+                const distThumbIndex = Math.sqrt(
+                    Math.pow(thumbTip.x - indexTip.x, 2) + 
+                    Math.pow(thumbTip.y - indexTip.y, 2)
+                );
+
+                let detectedChar = null;
+                let confidence = 0;
+
+                // A: Tangan tertutup, jempol terbuka
+                if (!isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen && isThumbOpen) {
+                    detectedChar = 'A';
+                    confidence = 92;
+                }
+                // B: Semua jari terbuka
+                else if (isIndexOpen && isMiddleOpen && isRingOpen && isPinkyOpen && !isThumbOpen) {
+                    detectedChar = 'B';
+                    confidence = 90;
+                }
+                // C: Huruf C shape
+                else if (isIndexOpen && isMiddleOpen && !isRingOpen && !isPinkyOpen && distThumbIndex > 0.1) {
+                    detectedChar = 'C';
+                    confidence = 88;
+                }
+                // D: Hanya telunjuk
+                else if (isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen) {
+                    detectedChar = 'D';
+                    confidence = 85;
+                }
+                // E: Semua jari terbuka
+                else if (isIndexOpen && isMiddleOpen && isRingOpen && isPinkyOpen && isThumbOpen) {
+                    detectedChar = 'E';
+                    confidence = 87;
+                }
+                // F: Jempol+Telunjuk terbuka
+                else if (isThumbOpen && isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen) {
+                    detectedChar = 'F';
+                    confidence = 84;
+                }
+                // G: Telunjuk + Kelingking
+                else if (isIndexOpen && !isMiddleOpen && !isRingOpen && isPinkyOpen && !isThumbOpen) {
+                    detectedChar = 'G';
+                    confidence = 86;
+                }
+                // I: Hanya kelingking
+                else if (!isIndexOpen && !isMiddleOpen && !isRingOpen && isPinkyOpen) {
+                    detectedChar = 'I';
+                    confidence = 89;
+                }
+                // L: Telunjuk + Jempol tegak lurus
+                else if (isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen && isThumbOpen && distThumbIndex > 0.15) {
+                    detectedChar = 'L';
+                    confidence = 88;
+                }
+                // O: Semua jari tertutup
+                else if (!isIndexOpen && !isMiddleOpen && !isRingOpen && !isPinkyOpen && !isThumbOpen) {
+                    detectedChar = 'O';
+                    confidence = 91;
+                }
+                // P: Telunjuk + Jari tengah
+                else if (isIndexOpen && isMiddleOpen && !isRingOpen && !isPinkyOpen && !isThumbOpen) {
+                    detectedChar = 'P';
+                    confidence = 85;
+                }
+                // V: Peace sign
+                else if (isIndexOpen && isMiddleOpen && !isRingOpen && !isPinkyOpen) {
+                    detectedChar = 'V';
+                    confidence = 90;
+                }
+                // W: 3 jari terbuka
+                else if (isIndexOpen && isMiddleOpen && isRingOpen && !isPinkyOpen && !isThumbOpen) {
+                    detectedChar = 'W';
+                    confidence = 87;
+                }
+                // Y: Jempol + Kelingking
+                else if (isThumbOpen && !isIndexOpen && !isMiddleOpen && !isRingOpen && isPinkyOpen) {
+                    detectedChar = 'Y';
+                    confidence = 86;
+                }
+
+                return { char: detectedChar, conf: confidence };
+            }
+
+            function showSuccessAnimation(char) {
+                const anim = document.createElement('div');
+                anim.className = 'success-animation';
+                anim.innerText = `✅ ${char}`;
+                document.body.appendChild(anim);
+                setTimeout(() => anim.remove(), 1000);
+            }
+
+            // Initialize MediaPipe
+            alphabetHands = new Hands({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
             });
+
+            alphabetHands.setOptions({
+                maxNumHands: 2,
+                modelComplexity: 0,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+
+            alphabetHands.onResults(onResults);
+
+            if (streamAlphabet) {
+                cameraAlphabet = new Camera(videoElement, {
+                    onFrame: async () => {
+                        await alphabetHands.send({image: videoElement});
+                    },
+                    width: 640,
+                    height: 480
+                });
+
+                cameraAlphabet.start().catch(err => {
+                    console.error(err);
+                    showToast('✗ Error memulai MediaPipe Hands');
+                });
+            }
         }
 
         // ============================================
