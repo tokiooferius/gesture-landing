@@ -139,7 +139,7 @@ export class GestureDetectionService {
     }
 
     /**
-     * Draw hand connections
+     * Draw hand connections dengan neon effect futuristik
      */
     drawConnectors(landmarks) {
         const connections = [
@@ -150,8 +150,15 @@ export class GestureDetectionService {
             [0, 17], [17, 18], [18, 19], [19, 20] // Pinky
         ];
 
-        this.canvasCtx.strokeStyle = '#00FF00';
-        this.canvasCtx.lineWidth = 2;
+        // Warna neon cyan dengan glow effect
+        this.canvasCtx.strokeStyle = '#00F0FF';
+        this.canvasCtx.lineWidth = 3;
+        this.canvasCtx.lineCap = 'round';
+        this.canvasCtx.lineJoin = 'round';
+        
+        // Glow shadow effect
+        this.canvasCtx.shadowColor = 'rgba(0, 240, 255, 0.8)';
+        this.canvasCtx.shadowBlur = 10;
 
         connections.forEach(([start, end]) => {
             const startPoint = landmarks[start];
@@ -168,25 +175,54 @@ export class GestureDetectionService {
             );
             this.canvasCtx.stroke();
         });
+        
+        // Reset shadow
+        this.canvasCtx.shadowColor = 'transparent';
+        this.canvasCtx.shadowBlur = 0;
     }
 
     /**
-     * Draw landmarks
+     * Draw landmarks dengan warna neon dinamis
      */
     drawLandmarks(landmarks) {
-        this.canvasCtx.fillStyle = '#FF0000';
-
-        landmarks.forEach((point) => {
+        landmarks.forEach((point, index) => {
+            // Warna neon berbeda untuk wrist, finger tips, dan joints
+            const isFingerTip = [4, 8, 12, 16, 20].includes(index);
+            const isWrist = index === 0;
+            
+            if (isWrist) {
+                this.canvasCtx.fillStyle = '#FF00FF'; // Magenta untuk wrist
+                this.canvasCtx.shadowColor = 'rgba(255, 0, 255, 0.8)';
+            } else if (isFingerTip) {
+                this.canvasCtx.fillStyle = '#FF6B00'; // Oranye untuk finger tips
+                this.canvasCtx.shadowColor = 'rgba(255, 107, 0, 0.8)';
+            } else {
+                this.canvasCtx.fillStyle = '#ADFF2F'; // Lime untuk joints
+                this.canvasCtx.shadowColor = 'rgba(173, 255, 47, 0.6)';
+            }
+            
+            this.canvasCtx.shadowBlur = 8;
+            
+            const radius = isWrist ? 5 : 4;
+            
             this.canvasCtx.beginPath();
             this.canvasCtx.arc(
                 point.x * this.canvasElement.width,
                 point.y * this.canvasElement.height,
-                3,
+                radius,
                 0,
                 2 * Math.PI
             );
             this.canvasCtx.fill();
+            
+            // Outer ring effect
+            this.canvasCtx.strokeStyle = this.canvasCtx.fillStyle;
+            this.canvasCtx.lineWidth = 1.5;
+            this.canvasCtx.stroke();
         });
+        
+        this.canvasCtx.shadowColor = 'transparent';
+        this.canvasCtx.shadowBlur = 0;
     }
 
     /**

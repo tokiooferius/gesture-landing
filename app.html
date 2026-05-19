@@ -71,6 +71,68 @@
         .animate-slide-in-up {
             animation: slideInUp 0.5s ease-out;
         }
+
+        /* Real-time Feedback Animations */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .animate-pop-in {
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .animate-fade-in-scale {
+            animation: fadeInScale 0.3s ease-out;
+        }
+
+        @keyframes highlightPulse {
+            0% { background-color: rgba(34, 197, 94, 0.3); }
+            50% { background-color: rgba(34, 197, 94, 0.6); }
+            100% { background-color: rgba(34, 197, 94, 0.3); }
+        }
+        
+        .gesture-highlight-success {
+            animation: highlightPulse 0.6s ease-in-out;
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            border-color: rgba(34, 197, 94, 0.5) !important;
+        }
+
+        @keyframes warningPulse {
+            0% { background-color: rgba(234, 179, 8, 0.3); }
+            50% { background-color: rgba(234, 179, 8, 0.6); }
+            100% { background-color: rgba(234, 179, 8, 0.3); }
+        }
+        
+        .gesture-highlight-warning {
+            animation: warningPulse 0.6s ease-in-out;
+            background-color: rgba(234, 179, 8, 0.2) !important;
+            border-color: rgba(234, 179, 8, 0.5) !important;
+        }
+
+        @keyframes errorPulse {
+            0% { background-color: rgba(239, 68, 68, 0.3); }
+            50% { background-color: rgba(239, 68, 68, 0.6); }
+            100% { background-color: rgba(239, 68, 68, 0.3); }
+        }
+        
+        .gesture-highlight-error {
+            animation: errorPulse 0.6s ease-in-out;
+            background-color: rgba(239, 68, 68, 0.2) !important;
+            border-color: rgba(239, 68, 68, 0.5) !important;
+        }
         
         #videoElement {
             transform: scaleX(-1);
@@ -82,6 +144,36 @@
         
         .mode-btn.active {
             @apply bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/50;
+        }
+
+        /* Dark Mode Support */
+        body.light-mode {
+            @apply bg-white text-slate-900;
+        }
+        
+        body.light-mode .glass-dark {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(100, 150, 200, 0.2);
+        }
+        
+        body.light-mode .glass-dark * {
+            color: inherit;
+        }
+
+        /* Detection Result Box Colors */
+        .detection-result-accurate {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+        
+        .detection-result-warning {
+            background: rgba(234, 179, 8, 0.15);
+            border-color: rgba(234, 179, 8, 0.5);
+        }
+        
+        .detection-result-error {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.5);
         }
     </style>
 </head>
@@ -97,6 +189,11 @@
             </div>
             
             <div class="flex items-center gap-4">
+                <button id="darkModeToggle" class="text-gray-300 hover:text-white transition" title="Toggle Dark Mode">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
                 <button id="helpBtn" class="text-gray-300 hover:text-white transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -542,9 +639,12 @@
                     appState.sentenceBuffer.push(detection.gesture);
                     updateSentenceBuilder();
 
-                    // Record in storage
-                    storage.recordDetection(detection.gesture);
+                    // Record in storage dengan confidence untuk akurasi calculation
+                    const result = storage.recordDetection(detection.gesture, detection.confidence);
                     storage.addToHistory(detection);
+                    
+                    // Trigger visual feedback animation
+                    triggerDetectionFeedback(result.isAccurate, detection.confidence);
                 });
             }
         });
@@ -562,17 +662,62 @@
         // ======== GESTURE DISPLAY ========
         function updateGestureDisplay(detection) {
             const gesture = detection.gesture;
-            document.getElementById('gestureDisplay').textContent = gesture.emoji || '🤟';
-            document.getElementById('gestureNameDisplay').textContent = gesture.name;
+            const gestureDisplay = document.getElementById('gestureDisplay');
+            const gestureNameDisplay = document.getElementById('gestureNameDisplay');
+            const confidenceBar = document.getElementById('confidenceBar');
+            const confidenceText = document.getElementById('confidenceText');
+            const infoPanel = gestureDisplay.closest('.glass-dark');
 
+            // Update display dengan animasi pop-in
+            gestureDisplay.textContent = gesture.emoji || '🤟';
+            gestureDisplay.classList.remove('animate-pop-in');
+            void gestureDisplay.offsetWidth; // Trigger reflow
+            gestureDisplay.classList.add('animate-pop-in');
+
+            gestureNameDisplay.textContent = gesture.name;
+            gestureNameDisplay.classList.remove('animate-fade-in-scale');
+            void gestureNameDisplay.offsetWidth;
+            gestureNameDisplay.classList.add('animate-fade-in-scale');
+
+            // Color feedback berdasarkan confidence
             const confidence = Math.round(detection.confidence * 100);
-            document.getElementById('confidenceBar').style.width = confidence + '%';
-            document.getElementById('confidenceText').textContent = `Confidence: ${confidence}%`;
+            confidenceBar.style.width = confidence + '%';
+            confidenceText.textContent = `Confidence: ${confidence}%`;
+
+            // Change confidence bar color
+            if (confidence >= 80) {
+                confidenceBar.className = 'bg-gradient-to-r from-green-500 to-green-400 h-full rounded-full transition-all duration-300';
+            } else if (confidence >= 60) {
+                confidenceBar.className = 'bg-gradient-to-r from-yellow-500 to-yellow-400 h-full rounded-full transition-all duration-300';
+            } else {
+                confidenceBar.className = 'bg-gradient-to-r from-red-500 to-red-400 h-full rounded-full transition-all duration-300';
+            }
 
             // Update stats display
             const stats = storage.getStats();
             document.getElementById('totalDetectionsDisplay').textContent = stats.totalDetections;
-            document.getElementById('accuracyDisplay').textContent = stats.accuracy + '%';
+            document.getElementById('accuracyDisplay').textContent = (Math.round(stats.accuracy * 100) / 100).toFixed(2) + '%';
+        }
+
+        function triggerDetectionFeedback(isAccurate, confidence) {
+            const infoPanel = document.querySelector('[id="gestureDisplay"]').closest('.glass-dark');
+            
+            // Remove previous classes
+            infoPanel.classList.remove('gesture-highlight-success', 'gesture-highlight-warning', 'gesture-highlight-error');
+            
+            // Add appropriate class
+            if (confidence >= 0.80) {
+                infoPanel.classList.add('gesture-highlight-success');
+            } else if (confidence >= 0.60) {
+                infoPanel.classList.add('gesture-highlight-warning');
+            } else {
+                infoPanel.classList.add('gesture-highlight-error');
+            }
+
+            // Remove class after animation
+            setTimeout(() => {
+                infoPanel.classList.remove('gesture-highlight-success', 'gesture-highlight-warning', 'gesture-highlight-error');
+            }, 600);
         }
 
         function addToRecentDetections(gesture) {
@@ -799,6 +944,26 @@
         console.log('✓ Storage service ready');
         console.log('✓ Speech synthesis ready');
         console.log('✓ Gesture detection ready');
+
+        // ======== DARK MODE TOGGLE ========
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const isDarkMode = localStorage.getItem('gestureflow_dark_mode') !== 'false';
+        
+        // Apply saved preference
+        if (!isDarkMode) {
+            document.body.classList.add('light-mode');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.contains('light-mode');
+            if (isLight) {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('gestureflow_dark_mode', 'true');
+            } else {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('gestureflow_dark_mode', 'false');
+            }
+        });
     </script>
 </body>
 </html>

@@ -80,16 +80,25 @@ export class StorageService {
     }
 
     /**
-     * Record detection
+     * Record detection dengan accuracy tracking
+     * @param {string} gesture - Nama gesture
+     * @param {number} confidence - Skor confidence (0-1)
+     * @param {boolean} manual - Manual deteksi atau auto
      */
-    recordDetection(gesture, success = true) {
+    recordDetection(gesture, confidence = 0.8, manual = true) {
         const stats = this.getStats();
         stats.totalDetections++;
         
-        if (success) {
+        // Akurat jika confidence >= 80% (0.80)
+        const isAccurate = confidence >= 0.80;
+        if (isAccurate) {
             stats.successfulDetections++;
-            stats.accuracy = (stats.successfulDetections / stats.totalDetections * 100).toFixed(2);
         }
+        
+        // Recalculate accuracy
+        stats.accuracy = stats.totalDetections > 0 
+            ? (stats.successfulDetections / stats.totalDetections * 100).toFixed(2)
+            : 0;
 
         // Track gesture progress
         if (!stats.gestureProgress[gesture]) {
@@ -98,7 +107,7 @@ export class StorageService {
         stats.gestureProgress[gesture]++;
 
         this.setStats(stats);
-        return stats;
+        return { stats, isAccurate };
     }
 
     /**
