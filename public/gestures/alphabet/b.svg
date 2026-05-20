@@ -1,0 +1,15 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="95" fill="#E0E7FF" stroke="#2563EB" stroke-width="2"/>
+  <g transform="translate(100, 100)">
+    <rect x="-15" y="20" width="30" height="35" fill="#F4A76A" rx="8"/>
+    <ellipse cx="0" cy="-5" rx="25" ry="30" fill="#F4A76A"/>
+    <rect x="-18" y="-45" width="9" height="50" fill="#F4A76A" rx="4.5"/>
+    <circle cx="-14.5" cy="-48" r="5.5" fill="#E89B5E"/>
+    <rect x="-6" y="-45" width="9" height="50" fill="#F4A76A" rx="4.5"/>
+    <circle cx="-1.5" cy="-48" r="5.5" fill="#E89B5E"/>
+    <rect x="6" y="-40" width="9" height="45" fill="#F4A76A" rx="4.5"/>
+    <circle cx="10.5" cy="-43" r="5.5" fill="#E89B5E"/>
+    <rect x="18" y="-35" width="9" height="40" fill="#F4A76A" rx="4.5"/>
+    <circle cx="22.5" cy="-38" r="5.5" fill="#E89B5E"/>
+  </g>
+</svg>

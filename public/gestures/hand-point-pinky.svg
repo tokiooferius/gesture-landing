@@ -1,0 +1,31 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#E0E7FF" stroke="#2563EB" stroke-width="2"/>
+  
+  <!-- Hand (Pointing Pinky - only pinky finger up) -->
+  <g transform="translate(100, 100)">
+    <!-- Wrist -->
+    <rect x="-15" y="20" width="30" height="35" fill="#F4A76A" rx="8"/>
+    
+    <!-- Palm (closed fist) -->
+    <ellipse cx="0" cy="0" rx="20" ry="24" fill="#F4A76A"/>
+    
+    <!-- Thumb (bent into fist) -->
+    <path d="M -18 -3 Q -24 -8 -23 2" fill="none" stroke="#E89B5E" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Index finger (bent into fist) -->
+    <path d="M -8 -28 Q -6 -15 -4 -5" fill="none" stroke="#E89B5E" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Middle finger (bent into fist) -->
+    <path d="M 2 -32 Q 3 -18 2 -6" fill="none" stroke="#E89B5E" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Ring finger (bent into fist) -->
+    <path d="M 12 -28 Q 13 -16 12 -4" fill="none" stroke="#E89B5E" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Pinky finger (pointing up) -->
+    <rect x="22" y="-48" width="8" height="52" fill="#F4A76A" rx="4"/>
+    <circle cx="26" cy="-51" r="5.5" fill="#E89B5E"/>
+    <!-- Highlight on pinky -->
+    <ellipse cx="24" cy="-28" rx="2" ry="7" fill="#fff" opacity="0.3"/>
+  </g>
+</svg>

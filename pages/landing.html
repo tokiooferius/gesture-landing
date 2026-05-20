@@ -17,99 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="../manifest.json">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232563EB;stop-opacity:1' /><stop offset='100%' style='stop-color:%2310B981;stop-opacity:1' /></linearGradient></defs><rect width='192' height='192' fill='url(%23grad)' rx='45'/><text x='96' y='110' font-size='100' text-anchor='middle' fill='white' font-family='Arial'>🤟</text></svg>">
     
-    <style>
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        /* Glassmorphism effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .glass-dark {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Smooth animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes pulse-slow {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-        
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        .animate-fade-in-down {
-            animation: fadeInDown 0.8s ease-out;
-        }
-        
-        .animate-slide-in-right {
-            animation: slideInRight 0.8s ease-out;
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse-slow 3s ease-in-out infinite;
-        }
-        
-        /* Gradient text */
-        .gradient-text {
-            background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="../src/styles/landing-styles.css">
 </head>
 <body class="bg-slate-950 text-white overflow-x-hidden">
     <!-- Navigation -->
@@ -127,7 +39,7 @@
                 <a href="#dampak" class="text-gray-300 hover:text-white transition">Dampak</a>
                 <a href="#teknologi" class="text-gray-300 hover:text-white transition">Teknologi</a>
             </div>
-            <a href="app.html" class="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition">
+            <a href="./app.html" class="bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition">
                 Buka Aplikasi
             </a>
         </div>
@@ -156,7 +68,7 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="app.html" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:-translate-y-1">
+                        <a href="./app.html" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:-translate-y-1">
                             Mulai Sekarang
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -301,7 +213,7 @@
                     <div class="aspect-video bg-slate-950 rounded-lg flex flex-col items-center justify-center gap-4">
                         <div class="text-6xl animate-bounce">🤟</div>
                         <p class="text-gray-400">Buka aplikasi untuk melihat demo gesture recognition</p>
-                        <a href="app.html" class="mt-4 px-6 py-2 bg-blue-600 rounded-lg font-semibold hover:bg-blue-500 transition">
+                        <a href="./app.html" class="mt-4 px-6 py-2 bg-blue-600 rounded-lg font-semibold hover:bg-blue-500 transition">
                             Buka Demo
                         </a>
                     </div>
@@ -387,7 +299,7 @@
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Siap Mulai?</h2>
             <p class="text-xl text-gray-400 mb-8">Coba aplikasi gesture recognition sekarang juga. Gratis dan open-source.</p>
-            <a href="app.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:-translate-y-1">
+            <a href="./app.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:-translate-y-1">
                 Buka Aplikasi GestureFlow
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
