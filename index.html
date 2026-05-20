@@ -376,6 +376,7 @@
             color: #b0b0c0;
             margin-bottom: 20px;
             line-height: 1.8;
+            text-align: justify;
         }
 
         .team-members {
@@ -420,9 +421,13 @@
         }
 
         .member-list li {
-            padding: 8px 0;
+            padding: 12px 0;
             color: #b0b0c0;
             border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
         }
 
         .member-list li:last-child {
@@ -433,6 +438,8 @@
             font-size: 0.85em;
             color: #90909a;
             display: block;
+            text-align: right;
+            white-space: nowrap;
         }
 
         .member-leader {
@@ -458,6 +465,7 @@
         .course-info p {
             margin: 10px 0;
             color: #b0b0c0;
+            text-align: justify;
         }
 
         .course-label {
@@ -745,31 +753,31 @@
                         <div class="team-card-title">👥 Tim Developer (7 Anggota)</div>
                         <ul class="member-list">
                             <li>
-                                1. Vincentius Pastica Gunawan
+                                <span>1. Vincentius Pastica Gunawan</span>
                                 <span class="member-nim">NIM: 103112430014 | IF 01</span>
                             </li>
                             <li>
-                                2. Harald
+                                <span>2. Harald</span>
                                 <span class="member-nim">NIM: 103112400130 | IF 02</span>
                             </li>
                             <li>
-                                3. Yossika Putra Erlangga
+                                <span>3. Yossika Putra Erlangga</span>
                                 <span class="member-nim">NIM: 103112430026 | IF 03</span>
                             </li>
                             <li>
-                                4. Agung Ramadhan
+                                <span>4. Agung Ramadhan</span>
                                 <span class="member-nim">NIM: 103112430060 | IF 04</span>
                             </li>
                             <li>
-                                5. Salsabilla Nurul Hassanah
+                                <span>5. Salsabilla Nurul Hassanah</span>
                                 <span class="member-nim">NIM: 103112430256 | IF 05</span>
                             </li>
                             <li>
-                                6. Ajda Mutiara Zahra
+                                <span>6. Ajda Mutiara Zahra</span>
                                 <span class="member-nim">NIM: 103112400210 | IF 06</span>
                             </li>
                             <li>
-                                7. Muhammad Faris Rachmadi
+                                <span>7. Muhammad Faris Rachmadi</span>
                                 <span class="member-nim">NIM: 103112400079 | IF 07</span>
                             </li>
                         </ul>
@@ -782,24 +790,19 @@
                         <div class="team-card-title">📋 Tahun Akademik</div>
                         <div class="course-info">
                             <p>
-                                <span class="course-label">📖 Mata Kuliah:</span><br>
-                                WGTIK (Wawasan Global TIK)
+                                <span class="course-label">📖 Mata Kuliah:</span> <span>WGTIK (Wawasan Global TIK)</span>
                             </p>
                             <p>
-                                <span class="course-label">👨‍🏫 Dosen Pengampu:</span><br>
-                                Rakhmad Maulidi
+                                <span class="course-label">👨‍🏫 Dosen Pengampu:</span> <span>Rakhmad Maulidi</span>
                             </p>
                             <p>
-                                <span class="course-label">🎓 Program:</span><br>
-                                S1 Teknik Informatika
+                                <span class="course-label">🎓 Program:</span> <span>S1 Teknik Informatika</span>
                             </p>
                             <p>
-                                <span class="course-label">🏛️ Fakultas:</span><br>
-                                Fakultas Informatika
+                                <span class="course-label">🏛️ Fakultas:</span> <span>Fakultas Informatika</span>
                             </p>
                             <p>
-                                <span class="course-label">📅 Tahun:</span><br>
-                                2025 - 2026
+                                <span class="course-label">📅 Tahun:</span> <span>2025 - 2026</span>
                             </p>
                         </div>
                     </div>
