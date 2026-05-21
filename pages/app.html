@@ -251,6 +251,7 @@
                         <div id="gestureDetailContainer" class="text-center">
                             <p id="selectedGestureEmoji" class="text-6xl mb-4">👋</p>
                             <h4 id="selectedGestureName" class="text-xl font-semibold mb-2">Select a Gesture</h4>
+                            <p id="selectedGestureTranslation" class="text-purple-400 font-bold text-lg mb-3" style="min-height: 28px;"></p>
                             <p id="selectedGestureDesc" class="text-gray-400 text-sm mb-4">
                                 Click on a gesture to see details and learn how to perform it
                             </p>
@@ -378,9 +379,9 @@
     <!-- Main Script -->
     <script type="module">
         // Import all services and utilities
-        import { StorageService } from './src/services/storageService.js';
-        import { SpeechSynthesisService } from './src/services/speechService.js';
-        import { GestureDetectionService } from './src/services/gestureService.js';
+        import { StorageService } from '../src/services/storageService.js';
+        import { SpeechSynthesisService } from '../src/services/speechService.js';
+        import { GestureDetectionService } from '../src/services/gestureService.js';
         import {
             StorageManager,
             AnimationUtils,
@@ -391,14 +392,14 @@
             MathUtils,
             ValidationUtils,
             DeviceUtils
-        } from './src/utils/helpers.js';
+        } from '../src/utils/helpers.js';
         import { 
             getBasicGestures, 
             getAlphabetGestures, 
             getNumberGestures,
             getAllGestures
-        } from './src/data/gestureLibrary.js';
-        import { ACHIEVEMENTS } from './src/data/achievements.js';
+        } from '../src/data/gestureLibrary.js';
+        import { ACHIEVEMENTS } from '../src/data/achievements.js';
 
         // ======== INITIALIZE SERVICES ========
         const storage = new StorageService();
@@ -656,6 +657,7 @@
                 card.innerHTML = `
                     <div class="text-4xl mb-2">${gesture.emoji}</div>
                     <p class="text-sm font-semibold">${gesture.name}</p>
+                    <p class="text-xs text-purple-300 mt-1" style="min-height: 16px;">${gesture.translation || ''}</p>
                 `;
                 card.addEventListener('click', () => {
                     updateGestureDetail(gesture);
@@ -667,6 +669,7 @@
         function updateGestureDetail(gesture) {
             document.getElementById('selectedGestureEmoji').textContent = gesture.emoji;
             document.getElementById('selectedGestureName').textContent = gesture.name;
+            document.getElementById('selectedGestureTranslation').textContent = gesture.translation ? `"${gesture.translation}"` : '';
             document.getElementById('selectedGestureDesc').textContent = gesture.description;
         }
 
