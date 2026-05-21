@@ -21,15 +21,41 @@ export class GestureDetectionService {
     }
 
     /**
-     * Initialize MediaPipe Hands v0.4
+     * Initialize MediaPipe Hands v0.4 & Browser Camera
      */
     async initialize(videoElement, canvasElement) {
         try {
-            console.log('⏳ Initializing MediaPipe Hands...');
+            console.log('⏳ Initializing camera & MediaPipe Hands...');
             this.videoElement = videoElement;
             this.canvasElement = canvasElement;
             this.canvasCtx = canvasElement.getContext('2d');
 
+            // Step 1: Initialize browser camera
+            console.log('📹 Requesting camera access...');
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { 
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user'
+                },
+                audio: false
+            });
+
+            videoElement.srcObject = stream;
+            
+            // Wait for video to be ready
+            await new Promise(resolve => {
+                videoElement.onloadedmetadata = () => {
+                    videoElement.play();
+                    resolve();
+                };
+            });
+
+            console.log('✅ Camera initialized');
+
+            // Step 2: Initialize MediaPipe Hands
+            console.log('⏳ Loading MediaPipe Hands model...');
+            
             // Verify MediaPipe is loaded from CDN
             if (typeof Hands === 'undefined') {
                 throw new Error('MediaPipe Hands not loaded from CDN');
@@ -56,7 +82,8 @@ export class GestureDetectionService {
             return true;
             
         } catch (error) {
-            console.error('❌ Failed to initialize MediaPipe:', error);
+            console.error('❌ Failed to initialize camera & MediaPipe:', error);
+            console.error('Error details:', error.name, error.message);
             return false;
         }
     }
@@ -97,13 +124,18 @@ export class GestureDetectionService {
     detectionLoop() {
         if (!this.isDetecting) return;
 
-        if (this.modelReady && this.hands && 
-            this.videoElement && 
-            this.videoElement.readyState >= 2 &&
-            typeof this.hands.send === 'function') {
-            
-            this.hands.send({ image: this.videoElement })
-                .catch(err => console.debug('Frame drop:', err));
+        try {
+            // Check if video is ready for processing
+            if (this.modelReady && this.hands && 
+                this.videoElement && 
+                this.videoElement.readyState >= 3 && // HAVE_FUTURE_DATA or better
+                this.videoElement.srcObject &&
+                typeof this.hands.send === 'function') {
+                
+                this.hands.send({ image: this.videoElement });
+            }
+        } catch (err) {
+            console.debug('Detection frame error:', err.message);
         }
 
         requestAnimationFrame(() => this.detectionLoop());
@@ -268,6 +300,14 @@ export class GestureDetectionService {
      */
     stopDetection() {
         this.isDetecting = false;
+        
+        // Stop camera stream
+        if (this.videoElement && this.videoElement.srcObject) {
+            const stream = this.videoElement.srcObject;
+            stream.getTracks().forEach(track => track.stop());
+            this.videoElement.srcObject = null;
+        }
+        
         console.log('⏹ Gesture detection stopped');
     }
 

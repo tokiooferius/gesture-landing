@@ -13,10 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- MediaPipe -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <!-- MediaPipe v0.4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.4/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.4/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -87,7 +87,7 @@
                     <div class="md:col-span-2 glass-dark rounded-2xl p-4 border border-blue-400/30">
                         <div class="space-y-4">
                             <div class="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg overflow-hidden relative">
-                                <video id="videoElement" class="w-full h-full object-cover" autoplay muted></video>
+                                <video id="videoElement" class="w-full h-full object-cover" autoplay muted playsinline></video>
                                 <canvas id="canvasElement" class="absolute inset-0 w-full h-full"></canvas>
                                 
                                 <!-- Loading Indicator -->
