@@ -219,8 +219,11 @@
                             <button id="clearSentenceBtn" class="flex-1 bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg text-sm transition">
                                 🗑 Clear
                             </button>
-                            <button id="copySentenceBtn" class="flex-1 bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded-lg text-sm transition">
-                                📋 Copy
+                            <button id="speakSentenceBtn" class="flex-1 bg-blue-700 hover:bg-blue-600 px-3 py-2 rounded-lg text-sm transition" disabled>
+                                🔊 Baca
+                            </button>
+                            <button id="copySentenceBtn" class="flex-1 bg-indigo-700 hover:bg-indigo-600 px-3 py-2 rounded-lg text-sm transition" disabled>
+                                📋 Salin
                             </button>
                         </div>
                     </div>
@@ -276,15 +279,15 @@
 
 <script>
 // ============================================================
-// GESTURE DEFINITIONS
+// GESTURE DEFINITIONS dengan arti/makna
 // ============================================================
 const GESTURES = {
-    open_hand:  { name: 'Open Hand',  emoji: '🖐️', description: 'Buka semua jari selebar mungkin, telapak menghadap kamera.' },
-    peace:      { name: 'Peace',      emoji: '✌️', description: 'Angkat telunjuk & jari tengah, jari lain ditekuk.' },
-    thumbs_up:  { name: 'Thumbs Up',  emoji: '👍', description: 'Acungkan jempol ke atas, semua jari lain tertutup.' },
-    ok:         { name: 'OK Sign',    emoji: '👌', description: 'Satukan ujung jempol & telunjuk, angkat jari lain.' },
-    fist:       { name: 'Fist',       emoji: '✊', description: 'Kepalkan semua jari rapat-rapat.' },
-    pointing:   { name: 'Pointing',   emoji: '☝️', description: 'Angkat hanya jari telunjuk, jari lain tertutup.' }
+    open_hand:  { name: 'Open Hand',  emoji: '🖐️', description: 'Buka semua jari selebar mungkin, telapak menghadap kamera.', meaning: 'Halo', ttsText: 'Halo' },
+    peace:      { name: 'Peace',      emoji: '✌️', description: 'Angkat telunjuk & jari tengah, jari lain ditekuk.', meaning: 'Terima kasih', ttsText: 'Terima kasih' },
+    thumbs_up:  { name: 'Thumbs Up',  emoji: '👍', description: 'Acungkan jempol ke atas, semua jari lain tertutup.', meaning: 'Bagus', ttsText: 'Bagus' },
+    ok:         { name: 'OK Sign',    emoji: '👌', description: 'Satukan ujung jempol & telunjuk, angkat jari lain.', meaning: 'OK', ttsText: 'Oke' },
+    fist:       { name: 'Fist',       emoji: '✊', description: 'Kepalkan semua jari rapat-rapat.', meaning: 'Berhenti', ttsText: 'Berhenti' },
+    pointing:   { name: 'Pointing',   emoji: '☝️', description: 'Angkat hanya jari telunjuk, jari lain tertutup.', meaning: 'Saya', ttsText: 'Saya' }
 };
 
 // ============================================================
@@ -467,6 +470,30 @@ function detectGesture(landmarks) {
 }
 
 // ============================================================
+// TEXT TO SPEECH
+// ============================================================
+function speakGesture(gestureType) {
+    if (!('speechSynthesis' in window)) {
+        console.warn('⚠️ Speech Synthesis tidak didukung browser ini');
+        return;
+    }
+    
+    const gesture = GESTURES[gestureType];
+    if (!gesture) return;
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(gesture.ttsText);
+    utterance.lang = 'id-ID';  // Indonesian
+    utterance.rate = 1;         // Normal speed
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    window.speechSynthesis.speak(utterance);
+}
+
+// ============================================================
 // SENTENCE BUILDER
 // ============================================================
 function addToSentence(gestureType) {
@@ -476,15 +503,26 @@ function addToSentence(gestureType) {
     updateSentenceBuilder();
     updateDashboardBreakdown();
     document.getElementById('dashGesturesCaptured').textContent = appState.sentenceHistory.length;
-    showNotification(`Ditambahkan: ${GESTURES[gestureType].emoji} ${GESTURES[gestureType].name}`, 'success');
+    
+    // Speak the gesture meaning
+    speakGesture(gestureType);
+    
+    showNotification(`Ditambahkan: ${GESTURES[gestureType].emoji} ${GESTURES[gestureType].name} (${GESTURES[gestureType].meaning})`, 'success');
 }
 
 function updateSentenceBuilder() {
     const builder = document.getElementById('sentenceBuilder');
+    const speakBtn = document.getElementById('speakSentenceBtn');
+    const copyBtn = document.getElementById('copySentenceBtn');
+    
     if (appState.sentenceHistory.length === 0) {
         builder.textContent = '(gesture akan muncul di sini)';
+        speakBtn.disabled = true;
+        copyBtn.disabled = true;
     } else {
         builder.textContent = appState.sentenceHistory.map(t => GESTURES[t]?.emoji || '?').join(' ');
+        speakBtn.disabled = false;
+        copyBtn.disabled = false;
     }
 }
 
@@ -585,9 +623,10 @@ function populateGestureGuide() {
     guide.innerHTML = '';
     Object.entries(GESTURES).forEach(([key, g]) => {
         guide.innerHTML += `
-            <div class="text-center p-3 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 hover:border-purple-500/50 cursor-pointer transition gesture-card" title="${g.description}">
+            <div class="text-center p-3 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 hover:border-purple-500/50 cursor-pointer transition gesture-card" title="${g.description}" onclick="speakGesture('${key}')">
                 <div class="text-3xl mb-1">${g.emoji}</div>
                 <p class="text-xs font-medium text-gray-200">${g.name}</p>
+                <p class="text-xs text-purple-300 font-semibold mt-1">= ${g.meaning}</p>
             </div>`;
     });
 }
@@ -597,9 +636,10 @@ function populateLearnMode() {
     cards.innerHTML = '';
     Object.entries(GESTURES).forEach(([key, g]) => {
         cards.innerHTML += `
-            <div class="gesture-card bg-gray-800/80 border border-gray-700 hover:border-purple-500/50 rounded-2xl p-5">
+            <div class="gesture-card bg-gray-800/80 border border-gray-700 hover:border-purple-500/50 rounded-2xl p-5 cursor-pointer" onclick="speakGesture('${key}')">
                 <div class="text-5xl mb-3">${g.emoji}</div>
                 <h3 class="font-bold text-lg mb-1">${g.name}</h3>
+                <p class="text-purple-300 font-semibold text-sm mb-3">Arti: "${g.meaning}"</p>
                 <p class="text-gray-400 text-sm">${g.description}</p>
             </div>`;
     });
@@ -672,10 +712,28 @@ document.getElementById('clearSentenceBtn').addEventListener('click', () => {
     showNotification('Sentence dihapus', 'info');
 });
 
+document.getElementById('speakSentenceBtn').addEventListener('click', () => {
+    if (appState.sentenceHistory.length === 0) {
+        showNotification('Sentence masih kosong', 'info');
+        return;
+    }
+    const meanings = appState.sentenceHistory.map(t => GESTURES[t]?.meaning || '').filter(m => m).join(' ');
+    const utterance = new SpeechSynthesisUtterance(meanings);
+    utterance.lang = 'id-ID';
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    showNotification('Membaca kalimat...', 'info');
+});
+
 document.getElementById('copySentenceBtn').addEventListener('click', () => {
-    const text = appState.sentenceHistory.map(t => GESTURES[t]?.emoji).join(' ');
-    if (!text) { showNotification('Sentence masih kosong', 'info'); return; }
-    navigator.clipboard.writeText(text).then(() => showNotification('Disalin ke clipboard!', 'success'));
+    if (appState.sentenceHistory.length === 0) { 
+        showNotification('Sentence masih kosong', 'info'); 
+        return; 
+    }
+    const meanings = appState.sentenceHistory.map(t => GESTURES[t]?.meaning || '').filter(m => m).join(' ');
+    navigator.clipboard.writeText(meanings).then(() => showNotification('Disalin: ' + meanings, 'success'));
 });
 
 document.getElementById('darkModeToggle').addEventListener('click', () => {
